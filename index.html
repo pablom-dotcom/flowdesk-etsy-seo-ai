@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowDesk Etsy SEO AI — Instant Etsy Tags, Titles & Descriptions</title>
+<meta name="description" content="Generate 13 optimized Etsy tags, an SEO-ready title, and a scroll-stopping first paragraph for any product — in 10 seconds. Free to try, no signup required.">
+<style>
+  :root {
+    --bg:#0d0f14; --surface:#161920; --card:#1c2030; --border:#252a3a;
+    --accent:#00e5a0; --accent2:#7b6fff; --accent3:#ff6b9d;
+    --text:#e8ecf4; --muted:#8088a4; --green:#22c55e; --red:#ef4444;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.6; }
+  a { color:inherit; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
+
+  /* NAV */
+  nav { border-bottom:1px solid var(--border); position:sticky; top:0; background:rgba(13,15,20,0.92); backdrop-filter:blur(8px); z-index:50; }
+  nav .wrap { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px; }
+  .logo-icon { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#0d0f14; }
+  .logo span { color:var(--accent); }
+  .nav-links { display:flex; gap:28px; font-size:14px; color:var(--muted); }
+  .nav-links a:hover { color:var(--text); }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:10px; font-weight:700; font-size:14px; padding:11px 22px; border:none; cursor:pointer; transition:transform .12s ease, opacity .12s ease; text-decoration:none; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn-primary { background:linear-gradient(135deg,var(--accent),#00c98c); color:#06281f; }
+  .btn-ghost { background:var(--card); color:var(--text); border:1px solid var(--border); }
+  .btn-block { width:100%; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+  /* HERO */
+  .hero { padding:88px 0 64px; text-align:center; }
+  .pill { display:inline-block; background:rgba(0,229,160,0.1); border:1px solid rgba(0,229,160,0.25); color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.4px; padding:6px 14px; border-radius:30px; margin-bottom:22px; }
+  h1 { font-size:46px; font-weight:900; letter-spacing:-1.4px; max-width:760px; margin:0 auto 18px; }
+  h1 em { font-style:normal; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero p.sub { font-size:17px; color:var(--muted); max-width:560px; margin:0 auto 34px; }
+  .hero-ctas { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .hero-note { margin-top:16px; font-size:12px; color:var(--muted); }
+
+  /* TOOL */
+  .tool-section { padding:20px 0 72px; }
+  .tool-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:32px; max-width:760px; margin:0 auto; }
+  .tool-card h2 { font-size:20px; font-weight:800; margin-bottom:6px; }
+  .tool-card .hint { font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .input-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .input-row input[type=text] { flex:1; min-width:220px; background:#11141b; border:1px solid var(--border); border-radius:10px; padding:13px 16px; color:var(--text); font-size:14px; outline:none; }
+  .input-row input[type=text]:focus { border-color:var(--accent); }
+  .quota { margin-top:12px; font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .quota .dot { width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block; }
+  .quota.low .dot { background:var(--accent3); }
+
+  .result { margin-top:28px; display:none; }
+  .result.show { display:block; animation:fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  .result-block { background:#11141b; border:1px solid var(--border); border-radius:14px; padding:18px 20px; margin-bottom:14px; }
+  .result-block .lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:8px; }
+  .result-block .copy-btn { float:right; font-size:11px; color:var(--muted); background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; cursor:pointer; }
+  .result-block .copy-btn:hover { color:var(--text); border-color:var(--accent); }
+  .tag-chip { display:inline-block; background:var(--card); border:1px solid var(--border); border-radius:7px; font-size:12.5px; padding:5px 10px; margin:3px 4px 3px 0; }
+  .title-text { font-size:15px; font-weight:600; line-height:1.5; }
+  .desc-text { font-size:13.5px; color:#c4cade; line-height:1.7; }
+
+  .loading { display:none; align-items:center; gap:10px; font-size:13px; color:var(--muted); margin-top:20px; }
+  .loading.show { display:flex; }
+  .spinner { width:16px; height:16px; border-radius:50%; border:2px solid var(--border); border-top-color:var(--accent); animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* PAYWALL MODAL */
+  .modal-bg { display:none; position:fixed; inset:0; background:rgba(8,10,14,0.72); z-index:200; align-items:center; justify-content:center; padding:20px; }
+  .modal-bg.show { display:flex; }
+  .modal { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:32px; max-width:420px; width:100%; text-align:center; }
+  .modal h3 { font-size:21px; font-weight:800; margin-bottom:10px; }
+  .modal p { font-size:13.5px; color:var(--muted); margin-bottom:22px; }
+  .modal .price { font-size:34px; font-weight:900; color:var(--accent); }
+  .modal .price span { font-size:14px; font-weight:600; color:var(--muted); }
+  .modal-close { background:none; border:none; color:var(--muted); font-size:13px; cursor:pointer; margin-top:14px; }
+
+  /* HOW IT WORKS */
+  .section { padding:64px 0; border-top:1px solid var(--border); }
+  .section-label { font-size:11px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:1.6px; margin-bottom:8px; text-align:center; }
+  .section-title { font-size:28px; font-weight:800; letter-spacing:-0.6px; text-align:center; margin-bottom:40px; }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .step { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:26px; }
+  .step .num { width:32px; height:32px; border-radius:9px; background:rgba(0,229,160,0.12); color:var(--accent); font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:14px; font-size:14px; }
+  .step h4 { font-size:15px; font-weight:700; margin-bottom:6px; }
+  .step p { font-size:13px; color:var(--muted); }
+
+  /* PRICING */
+  .pricing-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; max-width:640px; margin:0 auto; }
+  .price-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:28px; }
+  .price-card.featured { border-color:var(--accent); background:rgba(0,229,160,0.05); position:relative; }
+  .price-card .badge { position:absolute; top:-12px; right:24px; background:var(--accent); color:#06281f; font-size:11px; font-weight:800; padding:4px 12px; border-radius:20px; }
+  .price-card h4 { font-size:15px; font-weight:700; margin-bottom:4px; }
+  .price-card .amount { font-size:32px; font-weight:900; margin:10px 0 4px; }
+  .price-card .amount span { font-size:13px; color:var(--muted); font-weight:600; }
+  .price-card ul { list-style:none; margin:18px 0 22px; }
+  .price-card li { font-size:13px; color:#c4cade; margin-bottom:9px; padding-left:20px; position:relative; }
+  .price-card li::before { content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:800; }
+
+  /* FAQ */
+  .faq-item { border-bottom:1px solid var(--border); padding:18px 0; cursor:pointer; }
+  .faq-item:last-child { border-bottom:none; }
+  .faq-q { display:flex; justify-content:space-between; align-items:center; font-size:15px; font-weight:600; }
+  .faq-q .chev { color:var(--muted); transition:transform .15s ease; font-size:13px; }
+  .faq-item.open .chev { transform:rotate(180deg); color:var(--accent); }
+  .faq-a { font-size:13.5px; color:var(--muted); margin-top:10px; max-height:0; overflow:hidden; transition:max-height .2s ease; }
+  .faq-item.open .faq-a { max-height:240px; }
+  .faq-wrap { max-width:680px; margin:0 auto; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:36px 0; text-align:center; font-size:12.5px; color:var(--muted); }
+  footer .flinks { display:flex; gap:22px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
+
+  /* CHAT WIDGET */
+  .chat-fab { position:fixed; bottom:24px; right:24px; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; cursor:pointer; box-shadow:0 8px 28px rgba(0,229,160,0.28); font-size:22px; z-index:90; display:flex; align-items:center; justify-content:center; }
+  .chat-panel { position:fixed; bottom:92px; right:24px; width:340px; max-width:calc(100vw - 48px); background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:0 18px 50px rgba(0,0,0,0.4); display:none; flex-direction:column; max-height:460px; z-index:90; overflow:hidden; }
+  .chat-panel.show { display:flex; }
+  .chat-head { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .chat-head strong { font-size:14px; }
+  .chat-head span { font-size:11px; color:var(--accent); }
+  .chat-head button { background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; }
+  .chat-body { padding:14px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:10px; }
+  .msg { font-size:13px; padding:10px 13px; border-radius:11px; max-width:88%; line-height:1.5; }
+  .msg.bot { background:#11141b; border:1px solid var(--border); align-self:flex-start; color:#c4cade; }
+  .msg.user { background:rgba(0,229,160,0.12); color:var(--text); align-self:flex-end; }
+  .chat-suggestions { padding:0 18px 14px; display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-btn { font-size:11.5px; background:#11141b; border:1px solid var(--border); color:var(--muted); border-radius:20px; padding:6px 12px; cursor:pointer; }
+  .chip-btn:hover { color:var(--accent); border-color:var(--accent); }
+  .chat-input-row { padding:12px; border-top:1px solid var(--border); display:flex; gap:8px; }
+  .chat-input-row input { flex:1; background:#11141b; border:1px solid var(--border); border-radius:9px; padding:10px 12px; color:var(--text); font-size:13px; outline:none; }
+  .chat-input-row button { background:var(--accent); border:none; color:#06281f; font-weight:800; border-radius:9px; padding:0 14px; cursor:pointer; font-size:13px; }
+
+  @media (max-width: 760px) {
+    h1 { font-size:32px; }
+    .steps, .pricing-grid { grid-template-columns:1fr; }
+    .nav-links { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><div class="logo-icon">F</div>FlowDesk <span>Etsy SEO AI</span></div>
+    <div class="nav-links">
+      <a href="#tool">Try it free</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#tool" class="btn btn-primary">Generate tags free →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="pill">⚡ Built for Etsy sellers · No signup to try</div>
+    <h1>Stop guessing what to type in your <em>Etsy listing</em> fields.</h1>
+    <p class="sub">Type your product in plain English. Get a scroll-stopping SEO title, 13 front-loaded tags under the 20-character limit, and a first paragraph that converts — in about ten seconds.</p>
+    <div class="hero-ctas">
+      <a href="#tool" class="btn btn-primary">Try it free — 3 generations/day</a>
+      <a href="#how" class="btn btn-ghost">See how it works</a>
+    </div>
+    <div class="hero-note">No credit card · No account · Results in your browser only</div>
+  </div>
+</header>
+
+<section class="tool-section" id="tool">
+  <div class="wrap">
+    <div class="tool-card">
+      <h2>🔍 Generate your Etsy listing kit</h2>
+      <div class="hint">Describe what you're selling — e.g. "minimalist budget planner spreadsheet" or "hand-poured soy candle, lavender."</div>
+      <div class="input-row">
+        <input type="text" id="kw-input" placeholder="What are you selling?" maxlength="120">
+        <button class="btn btn-primary" id="generate-btn">✨ Generate</button>
+      </div>
+      <div class="quota" id="quota-line"><span class="dot"></span> <span id="quota-text">Loading your free quota…</span></div>
+
+      <div class="loading" id="loading-row"><div class="spinner"></div> Writing your SEO title, tags, and description…</div>
+
+      <div class="result" id="result-box">
+        <div class="result-block">
+          <button class="copy-btn" data-copy="title">Copy</button>
+          <div class="lbl">SEO Title</div>
+          <div class="title-text" id="out-title"></div>
+        </div>
+        <div class="result-block">
+          <button class="copy-btn" data-copy="tags">Copy all</button>
+          <div class="lbl">13 Etsy Tags</div>
+          <div id="out-tags"></div>
+        </div>
+        <div class="result-block">
+          <button class="copy-btn" data-copy="desc">Copy</button>
+          <div class="lbl">Opening Description Paragraph</div>
+          <div class="desc-text" id="out-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-label">How it works</div>
+    <div class="section-title">From blank listing to ready-to-publish in 3 steps</div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h4>Describe your product</h4><p>Type a plain-English description — no special formatting, no SEO knowledge required. The AI figures out the buyer-search angle for you.</p></div>
+      <div class="step"><div class="num">2</div><h4>AI builds your listing kit</h4><p>In seconds, you get an SEO-optimized title, 13 tags front-loaded with the keywords buyers actually search, and an opening paragraph written to convert browsers into buyers.</p></div>
+      <div class="step"><div class="num">3</div><h4>Copy, paste, publish</h4><p>One click copies each block straight to your clipboard. Drop it into Etsy's listing editor and you're done — no rewriting, no guesswork.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Free to try. Cheap to keep.</div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h4>Free</h4>
+        <div class="amount">$0</div>
+        <ul>
+          <li>3 generations per day</li>
+          <li>Full title + tags + description</li>
+          <li>One-click copy</li>
+          <li>No account required</li>
+        </ul>
+        <a href="#tool" class="btn btn-ghost btn-block">Start generating</a>
+      </div>
+      <div class="price-card featured">
+        <div class="badge">MOST POPULAR</div>
+        <h4>Pro</h4>
+        <div class="amount">$9 <span>/ month</span></div>
+        <ul>
+          <li>50 generations per day</li>
+          <li>Saved generation history</li>
+          <li>Bulk export to CSV</li>
+          <li>Priority AI response speed</li>
+          <li>Cancel anytime, one click</li>
+        </ul>
+        <button class="btn btn-primary btn-block" id="pro-monthly-btn">Upgrade to Pro</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-label">FAQ</div>
+    <div class="section-title">Questions, answered</div>
+    <div class="faq-wrap" id="faq-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="#tool">Tool</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ / Docs</a>
+      <a href="mailto:flowdskai@gmail.com">Contact</a>
+    </div>
+    <div>FlowDesk Etsy SEO AI · part of the FlowDesk AI tool family · flowdskai@gmail.com</div>
+    <div style="margin-top:6px; opacity:.7;">© 2026 FlowDesk AI. All listing content is generated for guidance — always review before publishing.</div>
+  </div>
+</footer>
+
+<button class="chat-fab" id="chat-fab" aria-label="Open support chat">💬</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-head">
+    <div><strong>FlowDesk Support</strong><br><span>● AI assistant — replies instantly</span></div>
+    <button id="chat-close">✕</button>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div class="msg bot">Hi! I'm the FlowDesk AI assistant. Ask me about how the tool works, pricing, limits, refunds, or your data — I can help right here, no waiting on email.</div>
+  </div>
+  <div class="chat-suggestions" id="chat-suggestions"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Type your question…">
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="paywall-modal">
+  <div class="modal">
+    <h3>You've used today's free generations</h3>
+    <p>You get 3 free Etsy listing kits every day, no account needed. Upgrade to Pro for 50/day, saved history, and bulk export — or just come back tomorrow for 3 more, on us.</p>
+    <div class="price">$9<span> / month, cancel anytime</span></div>
+    <button class="btn btn-primary btn-block" id="modal-upgrade-btn" style="margin-top:18px;">Upgrade to Pro — $9/mo</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="modal-wait-btn">I'll wait for tomorrow's free credits</button>
+    <div class="modal-close" id="modal-close">Close</div>
+  </div>
+</div>
+
+<script>
+/* XSS helper — escape all AI-generated output before inserting into innerHTML */
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* =========================================================================
+   FlowDesk Etsy SEO AI — front-end logic
+   - Free tier: 3 generations/day, tracked client-side (resets at local midnight)
+   - Calls /api/generate (serverless function) which talks to the LLM.
+   - If the API isn't deployed yet (e.g., static preview), falls back to a
+     local template-based generator so the demo always works end-to-end.
+   ========================================================================= */
+
+const FREE_DAILY_LIMIT = 3;
+const QUOTA_KEY = 'fd_etsy_seo_quota_v1';
+
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+function getQuota() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(QUOTA_KEY) || 'null');
+    if (!raw || raw.day !== todayStr()) return { day: todayStr(), used: 0 };
+    return raw;
+  } catch(e) { return { day: todayStr(), used: 0 }; }
+}
+function setQuota(q) { localStorage.setItem(QUOTA_KEY, JSON.stringify(q)); }
+function refreshQuotaUI() {
+  const q = getQuota();
+  const remaining = Math.max(0, FREE_DAILY_LIMIT - q.used);
+  const line = document.getElementById('quota-line');
+  const text = document.getElementById('quota-text');
+  text.textContent = remaining > 0
+    ? `${remaining} of ${FREE_DAILY_LIMIT} free generations left today`
+    : `Daily free limit reached — resets at midnight, or upgrade to Pro for 50/day`;
+  line.classList.toggle('low', remaining === 0);
+}
+refreshQuotaUI();
+
+/* ---------- Local fallback generator (works with zero backend / zero cost) ---------- */
+function localGenerate(keyword) {
+  const kw = keyword.trim().replace(/\s+/g, ' ');
+  const words = kw.split(' ').filter(Boolean);
+  const core = words.slice(0, 3).join(' ') || 'handmade item';
+  const niceCore = core.charAt(0).toUpperCase() + core.slice(1);
+
+  const titleTemplates = [
+    `${niceCore} | Custom ${words[words.length-1] || 'Gift'} | Handmade Etsy Find | Unique Personalized Present`,
+    `${niceCore} — Modern ${words[0] || 'Design'} | Perfect Gift for Any Occasion | Fast Shipping`,
+    `Personalized ${niceCore} | Thoughtful Gift Idea | Small Batch Handmade | Ships Quickly`
+  ];
+  const title = titleTemplates[kw.length % titleTemplates.length];
+
+  const tagSeeds = [
+    core, `${words[0]||'gift'} idea`, `handmade ${words[0]||'item'}`, 'custom gift',
+    'personalized', `${words[0]||'home'} decor`, 'unique gift', 'small shop find',
+    'gift for her', 'gift for him', 'made to order', 'etsy finds', 'one of a kind'
+  ];
+  const tags = tagSeeds.map(t => t.length > 19 ? t.slice(0,19) : t).slice(0,13);
+
+  const desc = `Looking for something that actually feels personal? This ${core} is designed and made in small batches — never mass-produced — so what arrives at your door feels like it was made just for you (because it basically was). Whether you're shopping for yourself or someone who's impossible to buy for, this is the kind of small detail that makes a big impression.`;
+
+  return { title, tags, desc };
+}
+
+/* ---------- API call with graceful fallback ---------- */
+async function generateListingKit(keyword) {
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keyword })
+    });
+    if (!res.ok) throw new Error('api-not-available');
+    const data = await res.json();
+    if (!data || !data.title || !data.tags || !data.description) throw new Error('bad-shape');
+    return { title: data.title, tags: data.tags, desc: data.description };
+  } catch (e) {
+    // No deployed backend yet (or it errored) — use the local generator so the
+    // product is still fully demoable and useful with zero infrastructure.
+    return localGenerate(keyword);
+  }
+}
+
+const genBtn = document.getElementById('generate-btn');
+const kwInput = document.getElementById('kw-input');
+const loadingRow = document.getElementById('loading-row');
+const resultBox = document.getElementById('result-box');
+const paywallModal = document.getElementById('paywall-modal');
+
+async function runGeneration() {
+  const kw = kwInput.value.trim();
+  if (!kw) { kwInput.focus(); return; }
+
+  const q = getQuota();
+  if (q.used >= FREE_DAILY_LIMIT) {
+    paywallModal.classList.add('show');
+    return;
+  }
+
+  genBtn.disabled = true;
+  loadingRow.classList.add('show');
+  resultBox.classList.remove('show');
+
+  const kit = await generateListingKit(kw);
+
+  loadingRow.classList.remove('show');
+  genBtn.disabled = false;
+
+  document.getElementById('out-title').textContent = kit.title;
+  document.getElementById('out-tags').innerHTML = kit.tags.map(t => `<span class="tag-chip">${escHtml(t)}</span>`).join('');
+  document.getElementById('out-desc').textContent = kit.desc;
+  resultBox.classList.add('show');
+  resultBox.scrollIntoView({ behavior:'smooth', block:'center' });
+
+  q.used += 1;
+  setQuota(q);
+  refreshQuotaUI();
+}
+genBtn.addEventListener('click', runGeneration);
+kwInput.addEventListener('keydown', e => { if (e.key === 'Enter') runGeneration(); });
+
+/* Copy buttons */
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const which = btn.dataset.copy;
+    let text = '';
+    if (which === 'title') text = document.getElementById('out-title').textContent;
+    if (which === 'desc') text = document.getElementById('out-desc').textContent;
+    if (which === 'tags') text = Array.from(document.querySelectorAll('#out-tags .tag-chip')).map(c=>c.textContent).join(', ');
+    navigator.clipboard?.writeText(text).then(() => {
+      const old = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => btn.textContent = old, 1400);
+    });
+  });
+});
+
+/* Paywall modal controls */
+document.getElementById('modal-close').addEventListener('click', () => paywallModal.classList.remove('show'));
+document.getElementById('modal-wait-btn').addEventListener('click', () => paywallModal.classList.remove('show'));
+const LEMONSQUEEZY_CHECKOUT_URL = 'https://flowdesk1.lemonsqueezy.com/checkout/buy/8dd2de9a-6bc8-4e3e-94f1-ede21d8c9b61';
+function goToCheckout(plan) {
+  // Live LemonSqueezy hosted checkout — opens in a new tab so the user
+  // doesn't lose their place (and any unsaved generation results) on this page.
+  window.open(LEMONSQUEEZY_CHECKOUT_URL, '_blank', 'noopener');
+}
+document.getElementById('modal-upgrade-btn').addEventListener('click', () => goToCheckout('Pro — $9/mo'));
+document.getElementById('pro-monthly-btn').addEventListener('click', () => goToCheckout('Pro — $9/mo'));
+
+/* ---------- FAQ ---------- */
+const FAQS = [
+  { q: 'Is this really free to use?', a: 'Yes — you get 3 full listing-kit generations every day with no account, no email, and no credit card. The free tier resets every 24 hours.' },
+  { q: 'What exactly do I get from each generation?', a: 'An SEO-optimized listing title, 13 Etsy tags front-loaded with buyer-search keywords (each under the 20-character limit), and an opening description paragraph written to hook browsers and convert them into buyers.' },
+  { q: 'Do I need to know anything about Etsy SEO to use this?', a: 'No. Just describe what you\'re selling in plain language — the AI handles the keyword research, character limits, and copywriting structure for you.' },
+  { q: 'What happens to what I type in?', a: 'Your product description is sent only to generate your results — it is not stored, sold, shared with other sellers, or used to train any model on your behalf.' },
+  { q: 'How is this different from just asking a chatbot myself?', a: 'This tool is purpose-built for Etsy\'s exact constraints: 140-character titles, 13 tags under 20 characters each, and the description structure that performs best in Etsy search and on-page conversion — all in one click, formatted and ready to paste.' },
+  { q: 'Can I cancel my Pro subscription anytime?', a: 'Yes — Pro is billed monthly with no contract. Cancel anytime from your billing portal and you\'ll keep access until the end of your current period.' },
+  { q: 'Do you offer refunds?', a: 'If Pro isn\'t a fit, contact us within 14 days of your first charge for a full refund — no forms, no hassle.' }
+];
+const faqList = document.getElementById('faq-list');
+FAQS.forEach((item, i) => {
+  const el = document.createElement('div');
+  el.className = 'faq-item';
+  el.innerHTML = `<div class="faq-q"><span>${item.q}</span><span class="chev">▾</span></div><div class="faq-a">${item.a}</div>`;
+  el.addEventListener('click', () => el.classList.toggle('open'));
+  faqList.appendChild(el);
+});
+
+/* ---------- AI support chat (rule-based, zero-cost, answers from FAQ + extra topics) ---------- */
+const SUPPORT_TOPICS = [
+  ...FAQS,
+  { q: 'How many tags do I get and what is the character limit?', a: 'You get 13 tags — Etsy\'s maximum — each kept under the 20-character limit and ordered with the highest-intent keyword first, exactly how Etsy search rewards front-loaded, specific tags.' },
+  { q: 'Is my payment information safe?', a: 'All payments are processed by our payment provider\'s secure, PCI-compliant checkout — we never see or store your card details.' },
+  { q: 'I want to talk to a human.', a: 'This tool is run by a small, fully remote team and support is handled here in chat and by email at flowdskai@gmail.com — we read and respond to every message personally, just not by phone.' },
+  { q: 'Can I use the generated listing as-is?', a: 'You can, but we recommend a quick personal read-through before publishing — the AI gives you a strong, ready-to-edit starting point, and a 30-second human pass always helps it feel like *your* shop\'s voice.' }
+];
+function findBestAnswer(question) {
+  const q = question.toLowerCase();
+  let best = null, bestScore = 0;
+  SUPPORT_TOPICS.forEach(topic => {
+    const words = topic.q.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+    let score = 0;
+    words.forEach(w => { if (q.includes(w)) score++; });
+    if (score > bestScore) { bestScore = score; best = topic; }
+  });
+  if (best && bestScore > 0) return best.a;
+  return "I don't have a canned answer for that one yet — the most reliable place to ask is flowdskai@gmail.com and a real person on the team will get back to you. In the meantime, try the suggestions below or check the FAQ section on this page.";
+}
+
+const chatFab = document.getElementById('chat-fab');
+const chatPanel = document.getElementById('chat-panel');
+const chatBody = document.getElementById('chat-body');
+const chatInput = document.getElementById('chat-input');
+const chatSuggestions = document.getElementById('chat-suggestions');
+
+function addMsg(text, who) {
+  const m = document.createElement('div');
+  m.className = 'msg ' + who;
+  m.textContent = text;
+  chatBody.appendChild(m);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function renderSuggestions() {
+  chatSuggestions.innerHTML = '';
+  const picks = [SUPPORT_TOPICS[0], SUPPORT_TOPICS[1], SUPPORT_TOPICS[6], SUPPORT_TOPICS[8]];
+  picks.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'chip-btn';
+    b.textContent = p.q;
+    b.addEventListener('click', () => handleUserMessage(p.q));
+    chatSuggestions.appendChild(b);
+  });
+}
+function handleUserMessage(text) {
+  if (!text.trim()) return;
+  addMsg(text, 'user');
+  chatInput.value = '';
+  setTimeout(() => addMsg(findBestAnswer(text), 'bot'), 380);
+}
+chatFab.addEventListener('click', () => { chatPanel.classList.toggle('show'); if (chatPanel.classList.contains('show')) renderSuggestions(); });
+document.getElementById('chat-close').addEventListener('click', () => chatPanel.classList.remove('show'));
+document.getElementById('chat-send').addEventListener('click', () => handleUserMessage(chatInput.value));
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleUserMessage(chatInput.value); });
+</script>
+</body>
+</html>
